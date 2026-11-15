@@ -1,0 +1,27 @@
+name: Validacion Continua Servicio Salud
+
+on:
+  push:
+    branches: [ "main", "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validar-estructura-y-contenedor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar archivos obligatorios del proyecto
+        run: |
+          test -f src/index.html
+          test -f src/styles.css
+          test -f Dockerfile
+          test -f docker-compose.yml
+          test -f .env.example
+          test -f .gitignore
+          test -f README.md
+
+      - name: Validar construcción de imagen Docker (nginx:alpine)
+        run: docker build -t portal-salud-test:ci .
