@@ -1,0 +1,11 @@
+services:
+  web-salud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portal-reserva-horas-medicas
+    ports:
+      - "${APP_PORT:-8080}:80"
+    env_file:
+      - .env.example
+    restart: unless-stopped
